@@ -16,20 +16,8 @@ login_button = {'type': 'submit'}
 
 
 # <editor-fold desc="Basic Steps for Web base Apps">
-@step("I go to our app and log in")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    context.execute_steps(u'''
-        Given I go to our app
-        Then The page title should be Stellar MMS
-        And Login using the credentials for Admin user
-        Then The page title should be Welcome - SERVICE_LINE - MARINA_NAME - Stellar MMS 
-    ''')
 
-
-@step("I go to our app")
+@step("I go to google")
 def step_impl(context):
     """
     :type context: behave.runner.Context
@@ -41,36 +29,6 @@ def step_impl(context):
     context.browser.wd.execute_script('localStorage.clear()')
 
     print(f'Opening {context.config.userdata["url"]}\n')
-
-
-@step("I click the menu button")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    context.browser.button(menu_button).click()
-
-
-@step("Login using the credentials for Admin user")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    # Login page objects
-    print(f'We Login using the stored credentials for Admin user.\n')
-    context.browser.text_field(id='username').clear()
-    context.browser.text_field(id='username').send_keys(context.config.userdata["admin_username"])
-    context.browser.text_field(id='password').clear()
-    context.browser.text_field(id='password').send_keys(context.config.userdata["admin_password"])
-    context.browser.button(login_button).click()
-    sleep(2)
-    context.execute_steps(u'''
-        Given I set the dropdown with xpath=//*[@id="main-wrapper"]/nav/div[2]/div/div[1]/span/div/select to be MimikyuTwo
-        And I check Location Change Successful is present in the page
-        And I save value of the select with xpath=//*[@id="main-wrapper"]/nav/div[2]/div/div[1]/span/div/select as marina_name
-        Then I save value of the select with xpath=//*[@id="main-wrapper"]/nav/div[2]/div/div[2]/span/div/select as service_line
-    ''')
-    print(f'We Login successfully\n')
 
 
 @step("I browse to {url}")
@@ -88,25 +46,6 @@ def step_impl(context):
     :type context: behave.runner.Context
     """
     context.browser.cookies.clear()
-
-
-@step("The page title should be {title}")
-def step_impl(context, title):
-    """
-    :param title: str, Expected page title
-    :type context: behave.runner.Context
-    """
-    sleep(2)
-    context.browser.wait()
-
-    if 'MARINA_NAME' in title:
-        title = title.replace('MARINA_NAME', context.fake_user['marina_name'])
-    if 'SERVICE_LINE' in title:
-        title = title.replace('SERVICE_LINE', context.fake_user['service_line'])
-    assert title in context.browser.title.strip(), f"Current Page Title: {context.browser.title}\n" \
-                                                   f"Expected Page Title: {title}\n"
-    print(f'The Current Page Title: {context.browser.title} matches the '
-          f'Expected Page Title: {title}\n')
 
 
 @step("I check {message} is present in the page")

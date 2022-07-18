@@ -36,7 +36,7 @@ def before_scenario(context, scenario):
     # options.add_argument("--start-maximized")
     options.add_argument("--incognito")
     options.add_argument("--private")
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     # context.browser = webdriver.Edge()
     context.browser = Browser(browser='chrome', options=options)
     context.browser.window().maximize()
